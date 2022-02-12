@@ -1,0 +1,40 @@
+
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "protocol/vmm";
+
+package vmm;
+
+service VMM {
+    // 报告状态
+    rpc ReportStatus(ReportStatusRequest) returns (google.protobuf.Empty) {}
+    // 获取启动参数
+    rpc GetStartArgs(GetStartArgsRequest) returns (GetStartArgsReply) {}
+    // 接受通知
+    rpc HandleEvent(HandleEventRequest) returns (stream Event) {}
+}
+
+message ReportStatusRequest {
+  string token = 1;
+  int32 status_code = 2;
+  string status = 3;
+}
+
+message GetStartArgsRequest {
+  string token = 1;
+}
+
+message GetStartArgsReply {
+  repeated string args = 1;
+}
+
+message HandleEventRequest {
+  string token = 1;
+}
+
+message Event {
+  int32 type = 1;
+  string payload = 2;
+}
